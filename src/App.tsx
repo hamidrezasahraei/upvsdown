@@ -25,12 +25,12 @@ const App: React.FC = () => {
   }, []);
 
   const handleBetUp = () => {
-    tg.MainButton.text = "You bet on UP!";
+    tg.MainButton.text = "You bet on price UP!";
     tg.MainButton.show();
   };
 
   const handleBetDown = () => {
-    tg.MainButton.text = "You bet on DOWN!";
+    tg.MainButton.text = "You bet on price DOWN!";
     tg.MainButton.show();
   };
 
