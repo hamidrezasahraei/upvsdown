@@ -17,6 +17,10 @@ const App: React.FC = () => {
       document.documentElement.style.setProperty('--telegram-text-color', themeParams.text_color || '#000000');
       document.documentElement.style.setProperty('--telegram-button-color', themeParams.button_color || '#0088cc');
       document.documentElement.style.setProperty('--telegram-button-text-color', themeParams.button_text_color || '#ffffff');
+
+      // Adjust the box background based on the detected theme (light or dark)
+      const boxBackgroundColor = themeParams.bg_color && themeParams.bg_color.toLowerCase() === '#000000' ? '#333333' : '#f9f9f9';
+      document.documentElement.style.setProperty('--box-background-color', boxBackgroundColor);
     }
 
     const generateRandomPrice = () => {
@@ -34,13 +38,33 @@ const App: React.FC = () => {
   }, []);
 
   const handleBetUp = () => {
-    tg.MainButton.text = "You bet on UP!";
-    tg.MainButton.show();
+    tg.requestStarPayment({
+      slug: 'your-bot-username', // Replace with your bot's username
+      amount: 10,
+      payload: 'bet_up_10_stars', // Custom payload to track the payment
+    }).then(() => {
+      tg.MainButton.text = "You successfully bet on UP!";
+      tg.MainButton.show();
+    }).catch((error: any) => {
+      tg.MainButton.text = "Payment failed!";
+      tg.MainButton.show();
+      console.error('Payment Error:', error);
+    });
   };
 
   const handleBetDown = () => {
-    tg.MainButton.text = "You bet on DOWN!";
-    tg.MainButton.show();
+    tg.requestStarPayment({
+      slug: 'your-bot-username', // Replace with your bot's username
+      amount: 10,
+      payload: 'bet_down_10_stars', // Custom payload to track the payment
+    }).then(() => {
+      tg.MainButton.text = "You successfully bet on DOWN!";
+      tg.MainButton.show();
+    }).catch((error: any) => {
+      tg.MainButton.text = "Payment failed!";
+      tg.MainButton.show();
+      console.error('Payment Error:', error);
+    });
   };
 
   return (
@@ -56,10 +80,10 @@ const App: React.FC = () => {
 
       <div className="buttons-container">
         <button className="bet-button bet-up" onClick={handleBetUp}>
-          Bet on UP
+          Bet on UP (10 stars)
         </button>
         <button className="bet-button bet-down" onClick={handleBetDown}>
-          Bet on DOWN
+          Bet on DOWN (10 stars)
         </button>
       </div>
     </div>
